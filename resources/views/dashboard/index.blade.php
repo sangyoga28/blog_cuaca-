@@ -88,6 +88,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
 
+        /* Welcome title adjustment */
         .welcome-title {
             font-size: 2rem;
             color: #667eea;
@@ -97,6 +98,15 @@
         .welcome-message {
             color: #666;
             font-size: 1.05rem;
+        }
+
+        .search-active-info {
+            background: #f0f7ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+            font-size: 0.9rem;
         }
 
         .main-grid {
@@ -399,6 +409,69 @@
             color: #999;
         }
 
+        .search-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .recommended-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommended-header {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #333;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+
         @media (max-width: 768px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -440,6 +513,7 @@
                 <div class="user-info">
                     <span>Selamat datang, <strong>{{ Auth::user()->name }}</strong></span>
                 </div>
+                <a href="{{ route('profile.index') }}" style="text-decoration: none; color: #667eea; font-weight: 600; padding: 0.6rem 1rem; background: #f0f0f0; border-radius: 0.5rem; transition: all 0.3s ease;" onmouseover="this.style.background='#667eea'; this.style.color='white';" onmouseout="this.style.background='#f0f0f0'; this.style.color='#667eea';">👤 Profil</a>
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" class="logout-btn">Keluar</button>
@@ -455,6 +529,66 @@
             <h1 class="welcome-title">👋 Halo, {{ Auth::user()->name }}!</h1>
             <p class="welcome-message">Selamat datang di Dashboard Blog Cuaca. Pantau kondisi cuaca terkini dan baca artikel berita terbaru dari kami.</p>
         </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <form action="{{ route('dashboard') }}" method="GET" class="search-form">
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="search-input" 
+                    placeholder="🔍 Cari artikel berdasarkan judul atau konten..." 
+                    value="{{ $search }}"
+                >
+                <button type="submit" class="search-btn">Cari</button>
+            </form>
+            @if ($search)
+                <div class="search-active-info">
+                    📌 Hasil pencarian untuk: <strong>"{{ $search }}"</strong> ({{ $posts->total() }} artikel ditemukan)
+                </div>
+            @endif
+        </div>
+
+        <!-- Recommended Articles Section -->
+        @if ($recommendedPosts->count() > 0 && !$search)
+            <div class="recommended-section">
+                <div class="recommended-header">⭐ Artikel Pilihan Kami</div>
+                <div class="posts-grid">
+                    @foreach ($recommendedPosts as $post)
+                        <div class="post-card">
+                            @if ($post->image_url)
+                                <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="post-image">
+                            @else
+                                <div class="post-image" style="display: flex; align-items: center; justify-content: center; font-size: 3rem;">📷</div>
+                            @endif
+                            
+                            <div class="post-content">
+                                @if ($post->category)
+                                    <div class="post-category">{{ $post->category->name }}</div>
+                                @endif
+                                
+                                <h3 class="post-title">{{ $post->title }}</h3>
+                                
+                                <p class="post-excerpt">
+                                    {{ Str::limit($post->content, 100, '...') }}
+                                </p>
+                                
+                                <div class="post-meta">
+                                    <div class="post-author">
+                                        👤 {{ $post->user->name }}
+                                    </div>
+                                    <div class="post-date">
+                                        {{ $post->created_at->format('d M Y') }}
+                                    </div>
+                                </div>
+                                
+                                <a href="{{ route('post.show', $post->slug) }}" class="read-more">Baca Selengkapnya →</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
         <!-- Main Grid: Weather + Posts -->
         <div class="main-grid">
@@ -534,7 +668,7 @@
                                         </div>
                                     </div>
                                     
-                                    <a href="#" class="read-more">Baca Selengkapnya →</a>
+                                    <a href="{{ route('post.show', $post->slug) }}" class="read-more">Baca Selengkapnya →</a>
                                 </div>
                             </div>
                         @endforeach
