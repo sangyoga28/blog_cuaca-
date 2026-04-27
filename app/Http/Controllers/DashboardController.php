@@ -14,11 +14,25 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $search = $request->input('search', '');
         
-        // Get recent posts with weather-related content
-        $posts = Post::with(['user', 'category'])
-            ->latest()
-            ->paginate(6);
+        // Build query for posts
+        $query = Post::with(['user', 'category']);
+        
+        // Apply search filter
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('content', 'like', '%' . $search . '%');
+        }
+        
+        // Get paginated posts
+        $posts = $query->latest()->paginate(6);
+        
+        // Get featured/recommended posts (random 3)
+        $recommendedPosts = Post::with(['user', 'category'])
+            ->inRandomOrder()
+            ->limit(3)
+            ->get();
         
         // Get all categories
         $categories = Category::all();
@@ -26,7 +40,7 @@ class DashboardController extends Controller
         // Get weather data (you can integrate with a weather API later)
         $weatherData = $this->getWeatherData();
         
-        return view('dashboard.index', compact('user', 'posts', 'categories', 'weatherData'));
+        return view('dashboard.index', compact('user', 'posts', 'categories', 'weatherData', 'recommendedPosts', 'search'));
     }
 
     /**
