@@ -15,44 +15,96 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $publisher = User::create([
-            'name' => 'Penerbit Cuaca',
-            'email' => 'publisher@cuaca.com',
+        // Create Admin
+        User::create([
+            'name' => 'Admin Blog Cuaca',
+            'email' => 'admin@blogcuaca.com',
             'password' => Hash::make('password123'),
-            'role' => 'publisher',
+            'role' => 'admin',
         ]);
 
-        $visitor = User::create([
-            'name' => 'Pengunjung Biasa',
-            'email' => 'visitor@cuaca.com',
+        // Create Writers
+        $writer1 = User::create([
+            'name' => 'Budi Hartono',
+            'email' => 'budi@blogcuaca.com',
             'password' => Hash::make('password123'),
-            'role' => 'visitor',
+            'role' => 'penulis',
         ]);
+
+        $writer2 = User::create([
+            'name' => 'Siti Nurhaliza',
+            'email' => 'siti@blogcuaca.com',
+            'password' => Hash::make('password123'),
+            'role' => 'penulis',
+        ]);
+
+        // Create Visitors
+        User::create([
+            'name' => 'Andi Wijaya',
+            'email' => 'andi@email.com',
+            'password' => Hash::make('password123'),
+            'role' => 'pengunjung',
+        ]);
+
+        User::create([
+            'name' => 'Rini Kusuma',
+            'email' => 'rini@email.com',
+            'password' => Hash::make('password123'),
+            'role' => 'pengunjung',
+        ]);
+
+        // Create Categories
 
         $kategoriHujan = Category::create([
-            'name' => 'Musim Hujan',
-            'slug' => 'musim-hujan'
+            'name' => 'Prakiraan Cuaca',
+            'slug' => 'prakiraan-cuaca',
+            'description' => 'Prediksi cuaca dan iklim terkini'
         ]);
 
-        $kategoriCerah = Category::create([
-            'name' => 'Cerah Berawan',
-            'slug' => 'cerah-berawan'
+        $kategoriBerita = Category::create([
+            'name' => 'Berita Cuaca',
+            'slug' => 'berita-cuaca',
+            'description' => 'Berita terbaru tentang cuaca ekstrem'
         ]);
 
+        $kategoriTips = Category::create([
+            'name' => 'Tips & Trik',
+            'slug' => 'tips-trik',
+            'description' => 'Tips dan trik menghadapi cuaca'
+        ]);
+
+        $kategoriUmum = Category::create([
+            'name' => 'Pengetahuan Umum',
+            'slug' => 'pengetahuan-umum',
+            'description' => 'Pengetahuan umum tentang meteorologi'
+        ]);
+
+        // Create Sample Posts
         Post::create([
-            'user_id' => $publisher->id,
+            'user_id' => $writer1->id,
             'category_id' => $kategoriHujan->id,
-            'title' => 'Prediksi Hujan Lebat di Jakarta',
-            'slug' => Str::slug('Prediksi Hujan Lebat di Jakarta'),
-            'content' => 'BMKG memperkirakan hujan lebat akan turun di wilayah Jakarta pada sore hari ini.',
+            'title' => 'Gelombang Panas Diprediksi Melanda Indonesia Bulan Depan',
+            'slug' => Str::slug('Gelombang Panas Diprediksi Melanda Indonesia Bulan Depan') . '-' . time(),
+            'content' => 'Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) memprediksi gelombang panas akan melanda sebagian besar wilayah Indonesia pada bulan depan. Hal ini disebabkan oleh tingginya tekanan udara di atas Benua Asia dan Samudera Pasifik.',
+            'status' => 'published',
         ]);
 
         Post::create([
-            'user_id' => $publisher->id,
-            'category_id' => $kategoriCerah->id,
-            'title' => 'Akhir Pekan Cerah untuk Liburan',
-            'slug' => Str::slug('Akhir Pekan Cerah untuk Liburan'),
-            'content' => 'Cuaca diprediksi sangat cerah di akhir pekan ini, cocok untuk liburan bersama keluarga.',
+            'user_id' => $writer2->id,
+            'category_id' => $kategoriTips->id,
+            'title' => 'Cuaca Ekstrem: Pengenalan dan Cara Menghadapinya',
+            'slug' => Str::slug('Cuaca Ekstrem: Pengenalan dan Cara Menghadapinya') . '-' . time(),
+            'content' => 'Cuaca ekstrem dapat membawa dampak besar bagi kehidupan manusia. Dalam artikel ini kami akan membahas cara-cara yang dapat dilakukan untuk meminimalkan risiko akibat cuaca ekstrem.',
+            'status' => 'published',
+        ]);
+
+        Post::create([
+            'user_id' => $writer1->id,
+            'category_id' => $kategoriUmum->id,
+            'title' => 'Apa Itu Musim Hujan dan Bagaimana Dampaknya?',
+            'slug' => Str::slug('Apa Itu Musim Hujan dan Bagaimana Dampaknya?') . '-' . time(),
+            'content' => 'Musim hujan adalah musim di mana curah hujan tinggi terjadi di suatu wilayah. Musim ini biasanya terjadi pada waktu-waktu tertentu dalam setahun. Artikel ini menjelaskan lebih lanjut tentang musim hujan dan dampaknya.',
+            'status' => 'published',
         ]);
     }
 }

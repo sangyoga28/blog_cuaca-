@@ -1,0 +1,33 @@
+# Penyelesaian Fitur Dashboard & Perbaikan Layout
+
+Saya telah menyelesaikan pembuatan halaman-halaman yang hilang serta memperbaiki layout UI seperti yang Anda minta.
+
+## 1. Perbaikan Layout UI & Responsivitas (Selesai)
+- Menambahkan kemampuan *scroll* (`overflow-y: auto`) pada seluruh halaman aplikasi. Sekarang form panjang seperti pada halaman pendaftaran (Register) tidak akan terpotong lagi di layar kecil.
+- Memperbesar elemen dekoratif (animasi Awan dan Matahari) di halaman login dan registrasi agar lebih proporsional dan nyaman dilihat, memberikan kesan premium.
+- Menambahkan *padding* yang aman (`padding: 40px 24px`) agar card konten tidak menempel rapat dengan ujung layar.
+
+## 2. Fitur Dashboard Admin (Selesai)
+Seluruh tombol menu di *sidebar* Admin kini telah terhubung ke halaman fitur masing-masing, tidak ada lagi halaman eror (blank):
+1. **Pengguna:** Halaman daftar pengguna dan halaman edit peran (Role) pengguna telah dibuat.
+2. **Kategori:** Halaman daftar kategori, halaman tambah kategori baru, dan halaman edit kategori.
+3. **Artikel:** Halaman untuk Admin melihat semua artikel dari semua penulis, serta fitur untuk mengedit status (Publish/Draft/Archive) artikel tersebut.
+
+## 3. Fitur Dashboard Penulis (Selesai)
+Sama halnya dengan Admin, dashboard Penulis kini sudah lengkap:
+1. **Artikel Saya:** Penulis dapat melihat daftar artikel miliknya sendiri beserta statusnya.
+2. **Buat Artikel:** Form pembuatan artikel dengan input *cover image*, kategori, dan konten, menggunakan desain yang konsisten.
+3. **Edit Artikel:** Halaman edit artikel yang hanya memungkinkan pengubahan status antara Draft dan Published.
+4. **Komentar:** Halaman bagi penulis untuk melihat komentar pengunjung yang ada pada artikel mereka dan dapat langsung membalas (*reply*) komentar tersebut.
+
+Semua halaman di atas dirancang menggunakan desain *glassmorphism* modern dengan tabel dan *form* yang estetis, mengikuti desain yang sudah ditetapkan di `layouts.app`.
+
+## Cara Memverifikasi:
+1. Buka kembali halaman **Register** dan perhatikan apakah Anda sudah bisa me-*scroll* form hingga ke tombol daftar di bagian paling bawah layar. Perhatikan juga animasi awan/matahari yang sekarang ukurannya lebih proporsional.
+2. Login menggunakan akun Admin (`admin@blogcuaca.com`) dan cobalah buka menu **Pengguna**, **Artikel**, dan **Kategori** di menu sebelah kiri.
+3. Coba login menggunakan akun Penulis (`budi@blogcuaca.com` dengan password `password123`) dan cobalah akses menu **Artikel** dan **Buat Artikel**.
+
+## 4. Perbaikan Tambahan (Update Lanjutan)
+- **Desain Ulang Ikon Cuaca:** Saya telah mendesain ulang bentuk ikon *Partly Cloudy* (awan dan matahari) pada halaman Login & Register. Titik pusat (*transform-origin*) animasi perputaran sinar matahari telah dikalibrasi ke `50px 50px` agar matahari berputar sempurna tanpa bergoyang. Ukuran *bounding box* SVG juga diperbesar dari `80px` menjadi `120px` agar animasi tidak lagi terpotong.
+- **Perbaikan Layout Dashboard Pengunjung:** Masalah konten yang tertutupi kotak gelap pada layar pengunjung berhasil diselesaikan dengan menghapus deklarasi *CSS Grid* pada `.app-container` di file `layouts.app.blade.php`. Hal ini mencegah konflik penempatan dengan *sidebar* yang posisinya sudah diset ke *fixed*.
+- **Investigasi Error 419:** Pesan `419 | PAGE EXPIRED` telah didiagnosis sebagai fitur *security timeout* standar Laravel (kedaluwarsa token CSRF/sesi berakhir). Hal ini dapat diselesaikan dengan memuat ulang (refresh) halaman login secara normal.

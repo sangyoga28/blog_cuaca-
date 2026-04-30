@@ -55,33 +55,13 @@
                 <!-- Logo & Branding -->
                 <div class="brand-section">
                 <div class="logo-icon">
-                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="20" cy="24" r="8" fill="url(#sunGradient)" />
-                        <g class="sun-rays">
-                            <line x1="20" y1="12" x2="20" y2="8" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="20" y1="36" x2="20" y2="40" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="8" y1="24" x2="4" y2="24" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="32" y1="24" x2="36" y2="24" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="11.5" y1="15.5" x2="8.7" y2="12.7" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="28.5" y1="32.5" x2="31.3" y2="35.3" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="11.5" y1="32.5" x2="8.7" y2="35.3" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                            <line x1="28.5" y1="15.5" x2="31.3" y2="12.7" stroke="url(#rayGradient)" stroke-width="2.5" stroke-linecap="round"/>
-                        </g>
-                        <path d="M30 28C30 24.5 32 22 35 22C35 18.5 37 16 40 16C43 16 45 18 45 21C47 21.5 48 23 48 25C48 27.5 46 29 43.5 29H30" fill="url(#cloudGradient)" opacity="0.9"/>
-                        <defs>
-                            <linearGradient id="sunGradient" x1="12" y1="16" x2="28" y2="32">
-                                <stop offset="0%" stop-color="#FFD700"/>
-                                <stop offset="100%" stop-color="#FF8C00"/>
-                            </linearGradient>
-                            <linearGradient id="rayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FFD700"/>
-                                <stop offset="100%" stop-color="#FFA500"/>
-                            </linearGradient>
-                            <linearGradient id="cloudGradient" x1="30" y1="16" x2="48" y2="29">
-                                <stop offset="0%" stop-color="#E8F0FE"/>
-                                <stop offset="100%" stop-color="#C5D5E8"/>
-                            </linearGradient>
-                        </defs>
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sun Rays -->
+                        <path class="sun-rays" d="M50 22V14 M50 78V86 M22 50H14 M78 50H86 M69.8 30.2L75.5 24.5 M69.8 69.8L75.5 75.5 M30.2 69.8L24.5 75.5 M30.2 30.2L24.5 24.5" stroke="#FFC107" stroke-width="6" stroke-linecap="round"/>
+                        <!-- Sun Core -->
+                        <circle class="sun-core" cx="50" cy="50" r="22" fill="#FFC107"/>
+                        <!-- Fluffy Cloud -->
+                        <path class="cloud-path" d="M45 75 L90 75 A12 12 0 0 0 90 51 A18 18 0 0 0 60 45 A16 16 0 0 0 45 75 Z" fill="#E2E8F0" opacity="0.95"/>
                     </svg>
                 </div>
                 <h1 class="brand-title">Blog Cuaca</h1>
@@ -91,23 +71,32 @@
 
             <!-- Right Side -->
             <div class="login-right">
-            <!-- Alert Messages -->
-            <div class="alert alert-error" id="alertError" style="display: none;">
-                <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                </svg>
-                <span id="alertErrorText"></span>
-            </div>
+            <!-- Alerts -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
 
-            <div class="alert alert-success" id="alertSuccess" style="display: none;">
-                <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span id="alertSuccessText"></span>
-            </div>
+            @if ($errors->any())
+                <div class="alert alert-error">
+                    <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
 
             <!-- Login Form -->
-            <form id="loginForm" class="login-form" novalidate>
+            <form id="loginForm" method="POST" action="{{ route('login.store') }}" class="login-form">
+                @csrf
                 <div class="input-group" id="emailGroup">
                     <label for="email" class="input-label">Email</label>
                     <div class="input-wrapper">
@@ -119,14 +108,17 @@
                             type="email"
                             id="email"
                             name="email"
-                            class="input-field"
+                            class="input-field @error('email') input-error-field @enderror"
                             placeholder="nama@email.com"
                             autocomplete="email"
+                            value="{{ old('email') }}"
                             required
                         >
                         <div class="input-focus-ring"></div>
                     </div>
-                    <span class="input-error" id="emailError"></span>
+                    @error('email')
+                        <span class="input-error">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="input-group" id="passwordGroup">
@@ -139,7 +131,7 @@
                             type="password"
                             id="password"
                             name="password"
-                            class="input-field"
+                            class="input-field @error('password') input-error-field @enderror"
                             placeholder="Masukkan kata sandi"
                             autocomplete="current-password"
                             required
@@ -156,7 +148,9 @@
                         </button>
                         <div class="input-focus-ring"></div>
                     </div>
-                    <span class="input-error" id="passwordError"></span>
+                    @error('password')
+                        <span class="input-error">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="form-options">
@@ -192,7 +186,7 @@
             <!-- Register CTA -->
             <div class="register-cta">
                 <p>Belum punya akun?</p>
-                <a href="#" class="btn-register" id="btnRegister">
+                <a href="{{ route('register') }}" class="btn-register" id="btnRegister">
                     Daftar Sekarang
                     <svg viewBox="0 0 20 20" fill="currentColor" class="register-arrow">
                         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -254,113 +248,12 @@
             eyeClosed.style.display = isPassword ? 'block' : 'none';
         });
 
-        // ===== Form Validation & Submit =====
+        // Add loading state on submit
         const loginForm = document.getElementById('loginForm');
-        const emailInput = document.getElementById('email');
-        const emailError = document.getElementById('emailError');
-        const passwordError = document.getElementById('passwordError');
-        const alertError = document.getElementById('alertError');
-        const alertErrorText = document.getElementById('alertErrorText');
-        const alertSuccess = document.getElementById('alertSuccess');
-        const alertSuccessText = document.getElementById('alertSuccessText');
         const btnLogin = document.getElementById('btnLogin');
-        const btnLoader = document.getElementById('btnLoader');
-
-        // Clear errors on input
-        emailInput.addEventListener('input', () => {
-            document.getElementById('emailGroup').classList.remove('has-error');
-            emailError.textContent = '';
-        });
-        passwordInput.addEventListener('input', () => {
-            document.getElementById('passwordGroup').classList.remove('has-error');
-            passwordError.textContent = '';
-        });
-
-        function showError(group, errorEl, message) {
-            document.getElementById(group).classList.add('has-error');
-            document.getElementById(errorEl).textContent = message;
-        }
-
-        function hideAlerts() {
-            alertError.style.display = 'none';
-            alertSuccess.style.display = 'none';
-        }
-
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            hideAlerts();
-
-            let valid = true;
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-
-            // Validate email
-            if (!email) {
-                showError('emailGroup', 'emailError', 'Email wajib diisi');
-                valid = false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showError('emailGroup', 'emailError', 'Format email tidak valid');
-                valid = false;
-            }
-
-            // Validate password
-            if (!password) {
-                showError('passwordGroup', 'passwordError', 'Kata sandi wajib diisi');
-                valid = false;
-            }
-
-            if (!valid) return;
-
-            // Show loading
+        
+        loginForm.addEventListener('submit', function() {
             btnLogin.classList.add('loading');
-            btnLogin.disabled = true;
-
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    // Show error
-                    const errorMsg = data.message || data.errors?.email?.[0] || 'Email atau kata sandi salah';
-                    alertError.style.display = 'flex';
-                    alertErrorText.textContent = errorMsg;
-
-                    // Shake animation
-                    document.getElementById('loginCard').classList.add('shake');
-                    setTimeout(() => {
-                        document.getElementById('loginCard').classList.remove('shake');
-                    }, 600);
-                } else {
-                    // Success
-                    localStorage.setItem('auth_token', data.access_token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-
-                    alertSuccess.style.display = 'flex';
-                    alertSuccessText.textContent = `Selamat datang, ${data.user.name}! Mengalihkan...`;
-
-                    // Success animation on card
-                    document.getElementById('loginCard').classList.add('success');
-
-                    setTimeout(() => {
-                        window.location.href = `/auth/token/${data.access_token}`;
-                    }, 1500);
-                }
-            } catch (err) {
-                alertError.style.display = 'flex';
-                alertErrorText.textContent = 'Terjadi kesalahan jaringan. Silakan coba lagi.';
-            } finally {
-                btnLogin.classList.remove('loading');
-                btnLogin.disabled = false;
-            }
         });
 
         // ===== Input Focus Animations =====
